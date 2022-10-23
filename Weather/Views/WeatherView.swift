@@ -9,11 +9,13 @@ import SwiftUI
 
 struct WeatherView: View {
     
-    @StateObject var viewmodel = WeatherViewModel()
-    @StateObject var callApi = APIService()
-    @Binding var searchedCity: String
-//    let weatherData: [WeatherModel] = []
-   
+    @StateObject var viewModel: WeatherViewModel
+    
+    
+    // MARK: - Init
+    init(weatherModel: WeatherModel) {
+        self._viewModel = StateObject(wrappedValue: WeatherViewModel(weatherModel: weatherModel))
+    }
     
     var body: some View {
         NavigationView {
@@ -32,12 +34,6 @@ struct WeatherView: View {
                 }
                 .foregroundColor(.white)
                 .font(.largeTitle)
-                .onAppear(perform: {
-                    self.callApi.apiCall(searchedCity: "\(searchedCity)", completion: {weatherModel in
-                        
-                        
-                    } )
-                })
                 
             }
             
@@ -49,7 +45,7 @@ struct WeatherView: View {
 struct WeatherView_Previews: PreviewProvider {
     @State static var searchedCity: String = ""
     static var previews: some View {
-        WeatherView(searchedCity: $searchedCity)
+        WeatherView(weatherModel: .emtpy())
     }
 }
 
@@ -57,7 +53,7 @@ fileprivate extension WeatherView {
     
     
     var temperature: some View {
-        Text("It is  C with ? and ? winds")
+        Text("It is \(viewModel.temp_c)°C with ? and \(viewModel.wind_kph) kph winds")
             .fontWeight(.medium)
     }
     

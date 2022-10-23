@@ -8,10 +8,18 @@
 import Foundation
 
 class WeatherViewModel: ObservableObject {
-    @Published var temp_c: Decimal = 0
-    @Published var wind_kph: Decimal = 0
     
-   
+    // MARK: - Properties
+    @Published var temp_c: Double
+    @Published var wind_kph: Double
+    
+    
+    // MARK: - Init
+    init(weatherModel: WeatherModel) {
+        self.temp_c = weatherModel.current.temp_c
+        self.wind_kph = weatherModel.current.wind_kph
+    }
+    
 }
 
 

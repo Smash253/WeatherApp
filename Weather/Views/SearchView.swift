@@ -31,14 +31,17 @@ struct SearchView: View {
                     searchBar
                     Spacer()
                     if !viewmodel.searchCity.isEmpty {
-                        nextButton
+                        goButton
                     }
                 }
                 .padding()
                 .navigationTitle("Weather App")
                 .navigationBarTitleDisplayMode(.large)
-
             }
+            .background(NavigationLink(
+                destination: activeNavigationLinkDestination,
+                isActive: $viewmodel.navigationLinkIsActive,
+                label: EmptyView.init))
         }
     }
 }
@@ -60,29 +63,30 @@ fileprivate extension SearchView {
         .cornerRadius(20)
     }
     
-    var nextButton: some View {
-        
-        NavigationLink {
-            WeatherView(searchedCity: $viewmodel.searchCity)
-                .navigationTitle(viewmodel.searchCity)
-                .navigationBarTitleDisplayMode(.inline)
-//                .toolbar {
-//                    ToolbarItem(placement: .principal) {
-//                        Text("Back")
-//                    }
-//                }
-                
-        }
-    label: {
-            Text("GO")
+    var goButton: some View {
+        Button {
+            viewmodel.goButtonTapped()
+        } label: {
+            Text(viewmodel.isSearching ? "Searching..." : "GO")
                 .font(.headline)
                 .fontWeight(.medium)
                 .foregroundColor(Color.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
-                .background(Color.blue)
+                .background(viewmodel.isSearching ? Color.gray : Color.blue)
                 .cornerRadius(20)
+                .disabled(viewmodel.isSearching)
         }
-        
+    }
+    
+    @ViewBuilder
+    var activeNavigationLinkDestination: some View {
+        switch viewmodel.activeNavigationLinkDestination {
+        case .none:
+            EmptyView()
+            
+        case .weatherView(let weatherModel):
+            WeatherView(weatherModel: weatherModel)
+        }
     }
 }
