@@ -28,8 +28,8 @@ struct WeatherView: View {
                 
 
                 temperature
-                clothes
-                Spacer()
+                
+                
                 
                 }
                 .foregroundColor(.white)
@@ -57,8 +57,4 @@ fileprivate extension WeatherView {
             .fontWeight(.medium)
     }
     
-    var clothes: some View {
-        Text("Wear a ?")
-            .fontWeight(.medium)
-    }
 }
