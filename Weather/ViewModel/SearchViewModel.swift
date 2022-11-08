@@ -25,23 +25,26 @@ class SearchViewModel: ObservableObject {
     // MARK: - Methods
     func goButtonTapped() {
         isSearching = true
-        apiService.apiCall(searchedCity: searchCity) { [weak self] result in
+        apiService.apiCall(searchedCity: searchCity){ [weak self] result in
             guard let self = self else { return }
             switch result {
             case .failure(let error):
                 print(error)
-                
+
             case .success(let weatherModel):
                 DispatchQueue.main.async {
                     self.activeNavigationLinkDestination = .weatherView(weatherModel: weatherModel)
                     self.navigationLinkIsActive = true
                 }
             }
-            
+
             DispatchQueue.main.async {
                 self.isSearching = false
             }
         }
+        
+        
+        
     }
 }
 

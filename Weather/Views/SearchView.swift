@@ -41,7 +41,9 @@ struct SearchView: View {
             .background(NavigationLink(
                 destination: activeNavigationLinkDestination,
                 isActive: $viewmodel.navigationLinkIsActive,
-                label: EmptyView.init))
+                label: EmptyView.init)
+            )
+            
         }
     }
 }

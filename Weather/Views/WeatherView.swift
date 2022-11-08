@@ -11,11 +11,12 @@ struct WeatherView: View {
     
     @StateObject var viewModel: WeatherViewModel
     
-    
     // MARK: - Init
     init(weatherModel: WeatherModel) {
         self._viewModel = StateObject(wrappedValue: WeatherViewModel(weatherModel: weatherModel))
     }
+    
+    
     
     var body: some View {
         NavigationView {
@@ -25,12 +26,8 @@ struct WeatherView: View {
 //                    ForEach(weatherData, id: \.self) { weather in
 //                        Text("\(weather.location.name)")
 //                    }
-                
-
                 temperature
-                
-                
-                
+                    
                 }
                 .foregroundColor(.white)
                 .font(.largeTitle)
@@ -38,7 +35,9 @@ struct WeatherView: View {
             }
             
         }
-                
+        .onAppear(
+        )
+        
     }
 }
 
@@ -55,6 +54,11 @@ fileprivate extension WeatherView {
     var temperature: some View {
         Text("It is \(viewModel.temp_c)°C with ? and \(viewModel.wind_kph) kph winds")
             .fontWeight(.medium)
+        
     }
     
+   
+
 }
+    
+
