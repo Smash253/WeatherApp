@@ -12,59 +12,39 @@ class WeatherViewModel: ObservableObject {
     // MARK: - Properties
     @Published var temp_c: Double
     @Published var wind_kph: Double
+    @Published var name: String
     
     
     // MARK: - Init
     init(weatherModel: WeatherModel) {
         self.temp_c = weatherModel.current.temp_c
         self.wind_kph = weatherModel.current.wind_kph
+        self.name = weatherModel.location.name
         
         enum Weather {
             case hot, warm, cold, freezing
             
         }
-        
-        var forecast = Weather.hot
-        
-        switch forecast {
-        case .hot:
-            print("shorts")
-        case .warm:
-            print("a sweater")
-        case .cold:
-            print("a jacket")
-        case .freezing:
-            print("a heavy jacket")
-        
-        }
-        
-        if temp_c > 30 {
-            print(Weather.cold)
-        } else if temp_c > 30 {
-            print(Weather.freezing)
-        }
-        
-        
+
     }
     
     
-    
-    
-    
-//    func temp() {
-//       enum Weather {
-//            case hot, warm, cold, freezing
-//        }
-//        if temp_c > 30 && temp_c > 22 {
-//            print("Wear shorts")
-//        } else if temp_c < 22 && temp_c > 14 {
-//            print("Wear a sweater")
-//        } else if temp_c < 13 && temp_c > 0 {
-//            print("Wear a jacket")
-//        } else if temp_c < 0 {
-//            print("Wear a heavy jacket")
-//        }
-//    }
+    func forecast() -> String {
+        
+        if temp_c > 30.0 && temp_c > 22.0 {
+            return "Wear shorts"
+        } else if temp_c < 22.0 && temp_c > 14.0 {
+            return "Wear a sweater"
+        } else if temp_c < 13.0 && temp_c > 0 {
+            return "Wear a jacket"
+        } else if temp_c < 0 {
+           return  "Wear a heavy jacket"
+        } else {
+            return "Not working"
+            
+        }
+        
+    }
     
 }
 
