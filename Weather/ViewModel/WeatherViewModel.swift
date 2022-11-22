@@ -14,7 +14,6 @@ class WeatherViewModel: ObservableObject {
     @Published var wind_kph: Double
     @Published var name: String
     
-    
     // MARK: - Init
     init(weatherModel: WeatherModel) {
         self.temp_c = weatherModel.current.temp_c
@@ -27,6 +26,8 @@ class WeatherViewModel: ObservableObject {
         }
 
     }
+    
+    
     
     
     func forecast() -> String {
@@ -43,6 +44,13 @@ class WeatherViewModel: ObservableObject {
             return "Not working"
             
         }
+        
+    }
+    
+    func farenheit() -> String {
+        let farenheit = (temp_c * 9/5) + 32
+        return farenheit.formatted()
+        
         
     }
     

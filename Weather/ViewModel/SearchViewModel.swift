@@ -21,7 +21,6 @@ class SearchViewModel: ObservableObject {
     @Published var activeNavigationLinkDestination: SearchViewNavigationDestinationType = .none
     @Published var isSearching: Bool = false
     
-    
     // MARK: - Methods
     func goButtonTapped() {
         isSearching = true
@@ -42,7 +41,6 @@ class SearchViewModel: ObservableObject {
                 self.isSearching = false
             }
         }
-        
         
         
     }

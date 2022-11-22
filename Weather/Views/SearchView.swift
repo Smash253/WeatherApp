@@ -11,10 +11,7 @@ import SwiftUI
 
 struct SearchView: View {
     
-//    @StateObject var weatherviewmodel: WeatherViewModel
-//    init(weatherviewmodel: WeatherViewModel) {
-//        self._weatherviewmodel = StateObject(wrappedValue: weatherviewmodel)
-//    }
+    
     
     @StateObject var viewmodel: SearchViewModel
     init(viewmodel: SearchViewModel) {
@@ -32,11 +29,18 @@ struct SearchView: View {
                     Spacer()
                     if !viewmodel.searchCity.isEmpty {
                         goButton
+                            
                     }
                 }
                 .padding()
                 .navigationTitle("Weather App")
                 .navigationBarTitleDisplayMode(.large)
+                
+                
+                if viewmodel.isSearching {
+                    Loading()
+                        
+                }
             }
             .background(NavigationLink(
                 destination: activeNavigationLinkDestination,
@@ -68,8 +72,9 @@ fileprivate extension SearchView {
     var goButton: some View {
         Button {
             viewmodel.goButtonTapped()
+            
         } label: {
-            Text(viewmodel.isSearching ? "Searching..." : "GO")
+            Text(viewmodel.isSearching ? "Searching..." : "Go")
                 .font(.headline)
                 .fontWeight(.medium)
                 .foregroundColor(Color.white)
@@ -78,8 +83,11 @@ fileprivate extension SearchView {
                 .background(viewmodel.isSearching ? Color.gray : Color.blue)
                 .cornerRadius(20)
                 .disabled(viewmodel.isSearching)
+        
+            
         }
     }
+    
     
     @ViewBuilder
     var activeNavigationLinkDestination: some View {
@@ -89,6 +97,18 @@ fileprivate extension SearchView {
             
         case .weatherView(let weatherModel):
             WeatherView(weatherModel: weatherModel)
+        }
+    }
+}
+
+struct Loading: View {
+    var body: some View {
+        ZStack {
+            Color(.systemGray5).ignoresSafeArea()
+            
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                .scaleEffect(3)
         }
     }
 }
