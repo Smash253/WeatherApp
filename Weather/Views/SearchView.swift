@@ -28,8 +28,7 @@ struct SearchView: View {
                     searchBar
                     Spacer()
                     if !viewmodel.searchCity.isEmpty {
-                        goButton
-                            
+                        goButton   
                     }
                 }
                 .padding()

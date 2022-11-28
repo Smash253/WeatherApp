@@ -20,17 +20,30 @@ class WeatherViewModel: ObservableObject {
         self.wind_kph = weatherModel.current.wind_kph
         self.name = weatherModel.location.name
         
-        enum Weather {
-            case hot, warm, cold, freezing
-            
-        }
-
     }
     
-    
-    
+    enum Weather {
+        case hot, warm, cold, freezing
+    }
     
     func forecast() -> String {
+        
+//        switch cast {
+//        case .hot:
+//            temp_c > 30.0 && temp_c > 22.0
+//            return "Wear shorts"
+//        case .warm:
+//            temp_c < 22.0 && temp_c > 14.0
+//            return "Wear a sweater"
+//        case .cold:
+//            temp_c < 13.0 && temp_c > 0
+//            return "Wear a jacket"
+//        case .freezing:
+//            temp_c < 0
+//            return "Wear a heavy jacket"
+//        default:
+//            return "no work"
+//        }
         
         if temp_c > 30.0 && temp_c > 22.0 {
             return "Wear shorts"
@@ -42,7 +55,6 @@ class WeatherViewModel: ObservableObject {
            return  "Wear a heavy jacket"
         } else {
             return "Not working"
-            
         }
         
     }
