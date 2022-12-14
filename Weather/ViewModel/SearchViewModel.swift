@@ -24,7 +24,7 @@ class SearchViewModel: ObservableObject {
     // MARK: - Methods
     func goButtonTapped() {
         isSearching = true
-        apiService.apiCall(searchedCity: searchCity){ [weak self] result in
+        apiService.getCurrentWeather(searchedCity: searchCity){ [weak self] result in
             guard let self = self else { return }
             switch result {
             case .failure(let error):

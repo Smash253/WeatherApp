@@ -22,40 +22,26 @@ class WeatherViewModel: ObservableObject {
         
     }
     
-    enum Weather {
-        case hot, warm, cold, freezing
-    }
     
     func forecast() -> String {
         
-//        switch cast {
-//        case .hot:
-//            temp_c > 30.0 && temp_c > 22.0
-//            return "Wear shorts"
-//        case .warm:
-//            temp_c < 22.0 && temp_c > 14.0
-//            return "Wear a sweater"
-//        case .cold:
-//            temp_c < 13.0 && temp_c > 0
-//            return "Wear a jacket"
-//        case .freezing:
-//            temp_c < 0
-//            return "Wear a heavy jacket"
-//        default:
-//            return "no work"
-//        }
-        
-        if temp_c > 30.0 && temp_c > 22.0 {
-            return "Wear shorts"
-        } else if temp_c < 22.0 && temp_c > 14.0 {
+        switch temp_c {
+        case ...0:
+            return "Wear a heavy jacket"
+        case 0...13:
+            return  "Wear a jacket"
+        case 13...22:
             return "Wear a sweater"
-        } else if temp_c < 13.0 && temp_c > 0 {
-            return "Wear a jacket"
-        } else if temp_c < 0 {
-           return  "Wear a heavy jacket"
-        } else {
-            return "Not working"
+        case 22...:
+            return "Wear shorts"
+        default:
+            return "No working"
         }
+
+//        let ddd: String = "sdsasd"
+//        switch ddd {
+//        case "Jacket"
+//        }
         
     }
     

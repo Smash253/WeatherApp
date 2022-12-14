@@ -14,7 +14,7 @@ enum CustomError: Error {
 
 class APIService: ObservableObject {
 
-    func apiCall(searchedCity: String, completion: @escaping ((Result<WeatherModel, Error>) -> Void )) {
+    func getCurrentWeather(searchedCity: String, completion: @escaping ((Result<WeatherModel, Error>) -> Void )) {
         let apikey = "686a24c285be4072bde75136220702"
         let searchedCityTrimmingWhiteSpaces = searchedCity.split(separator: " ").joined(separator: "_")
         print(searchedCityTrimmingWhiteSpaces)
@@ -40,6 +40,7 @@ class APIService: ObservableObject {
             
             do {
                 let response = try JSONDecoder().decode(WeatherModel.self, from: data)
+                
                 completion(.success(response))
             }
             catch let error {
