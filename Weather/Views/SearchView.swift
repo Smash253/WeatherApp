@@ -1,113 +1,68 @@
-//
-//  SearchView.swift
-//  Weather
-//
-//  Created by Darie Nistor Nicolae on 05.09.2022.
-//
-
 import SwiftUI
 
-
-
 struct SearchView: View {
-    
-    
-    
-    @StateObject var viewmodel: SearchViewModel
-    init(viewmodel: SearchViewModel) {
-        self._viewmodel = StateObject(wrappedValue: viewmodel)
-    }
-    
-    var body: some View {
-        
-        NavigationView {
-        
-            ZStack {
-                Color.backgroundColor.ignoresSafeArea(edges: .all)
-                VStack {
-                    searchBar
-                    Spacer()
-                    if !viewmodel.searchCity.isEmpty {
-                        goButton   
-                    }
-                }
-                .padding()
-                .navigationTitle("Weather App")
-                .navigationBarTitleDisplayMode(.large)
-                
-                
-                if viewmodel.isSearching {
-                    Loading()
-                        
-                }
+  @StateObject private var viewModel = SearchViewModel()
+  @FocusState private var isTextFieldFocused: Bool
+  @State private var navigateToDetail: Bool = false
+
+  var body: some View {
+    NavigationView {
+      VStack {
+        Text("Weather Search")
+          .font(.largeTitle)
+          .fontWeight(.bold)
+          .padding(.top, 40)
+          .foregroundColor(.primary)
+
+        TextField("Enter city name", text: $viewModel.cityName)
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+          .padding()
+          .focused($isTextFieldFocused)
+          .cornerRadius(8)
+          .padding(.horizontal, 20)
+
+        Spacer()
+
+        Button(action: {
+          Task {
+            await viewModel.searchWeather()
+            isTextFieldFocused = false
+            if case .success(_) = viewModel.viewState {
+              navigateToDetail = true
             }
-            .background(NavigationLink(
-                destination: activeNavigationLinkDestination,
-                isActive: $viewmodel.navigationLinkIsActive,
-                label: EmptyView.init)
-            )
-            
+          }
+        }) {
+          Text("Get Weather")
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.blue)
+            .cornerRadius(10)
+            .padding(.horizontal, 20)
         }
-    }
-}
+        .padding()
 
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView(viewmodel: SearchViewModel())
-    }
-}
-
-fileprivate extension SearchView {
-    var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass").foregroundColor(.gray)
-            TextField("Enter city...", text: $viewmodel.searchCity)
+        switch viewModel.viewState {
+        case .loading:
+          ProgressView()
+            .scaleEffect(1.5, anchor: .center)
+            .padding()
+        case .error(let message):
+          Text("Error: \(message)")
+            .foregroundColor(.red)
+            .padding()
+        case .success(_):
+          NavigationLink(
+            destination: WeatherDetailsView(viewModel: WeatherDetailViewModel(weatherModel: viewModel.weatherModel)),
+            isActive: $navigateToDetail,
+            label: { EmptyView() }
+          )
         }
-        .padding(10)
-        .background(Color(.systemGray5))
-        .cornerRadius(20)
+      }
+      .onAppear {
+        isTextFieldFocused = true
+      }
     }
-    
-    var goButton: some View {
-        Button {
-            viewmodel.goButtonTapped()
-            
-        } label: {
-            Text(viewmodel.isSearching ? "Searching..." : "Go")
-                .font(.headline)
-                .fontWeight(.medium)
-                .foregroundColor(Color.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(viewmodel.isSearching ? Color.gray : Color.blue)
-                .cornerRadius(20)
-                .disabled(viewmodel.isSearching)
-        
-            
-        }
-    }
-    
-    
-    @ViewBuilder
-    var activeNavigationLinkDestination: some View {
-        switch viewmodel.activeNavigationLinkDestination {
-        case .none:
-            EmptyView()
-            
-        case .weatherView(let weatherModel):
-            WeatherView(weatherModel: weatherModel)
-        }
-    }
-}
-
-struct Loading: View {
-    var body: some View {
-        ZStack {
-            Color(.systemGray5).ignoresSafeArea()
-            
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                .scaleEffect(3)
-        }
-    }
+  }
 }
